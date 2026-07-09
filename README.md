@@ -4,6 +4,8 @@ Animated electric control-room theme for WezTerm.
 
 <p align="center">
   <img src="assets/preview.png" alt="Electric Control Room preview" width="760">
+  <br>
+  <img src="assets/preview-alt.png" alt="Electric Control Room alternate preview" width="760">
 </p>
 
 This applies a dark cyan/black terminal treatment, electric cursor and selection accents, transparent window coloring, macOS blur, and a layered APNG background sweep. When `pause_when_idle` is enabled, unfocused shell windows switch to a quieter dormant background after a few unchanged status ticks.
