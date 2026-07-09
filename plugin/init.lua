@@ -249,7 +249,6 @@ function M.apply_to_config(config, options)
 
   config.background = active_background
   config.window_background_opacity = opt(options, "window_background_opacity", 0.96)
-  config.macos_window_background_blur = opt(options, "macos_window_background_blur", 20)
   config.animation_fps = opt(options, "animation_fps", 24)
   config.max_fps = opt(options, "max_fps", 60)
   config.default_cursor_style = opt(options, "cursor_style", "BlinkingBar")
