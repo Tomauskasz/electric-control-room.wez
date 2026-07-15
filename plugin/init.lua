@@ -1,6 +1,7 @@
 local wezterm = require("wezterm")
 
 local M = {}
+local plugin_url = "https://github.com/Tomauskasz/electric-control-room.wez"
 
 local window_state = {}
 local runtime = nil
@@ -41,17 +42,19 @@ local function opt(options, key, default)
   return options[key]
 end
 
-local function dirname(path)
-  return path:match("^(.*)[/\\][^/\\]+$") or "."
+local function normalize_plugin_url(url)
+  return (url or ""):gsub("/+$", ""):gsub("%.git$", "")
 end
 
 local function plugin_root()
-  local source = debug.getinfo(1, "S").source
-  if source:sub(1, 1) ~= "@" then
-    error("electric-control-room.wez: unable to resolve plugin directory")
+  local expected_url = normalize_plugin_url(plugin_url)
+  for _, plugin in ipairs(wezterm.plugin.list()) do
+    if normalize_plugin_url(plugin.url) == expected_url then
+      return plugin.plugin_dir
+    end
   end
 
-  return dirname(dirname(source:sub(2)))
+  error("electric-control-room.wez: unable to resolve plugin directory")
 end
 
 local function path_join(...)
