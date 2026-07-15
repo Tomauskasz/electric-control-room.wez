@@ -41,10 +41,14 @@ electric.apply_to_config(config, {
   pause_when_idle = true,
   sweep_opacity = 0.24,
   dormant_opacity = 0.14,
+  animate_on_windows = false,
+  windows_static_opacity = 1.0,
 })
 ```
 
-Set `set_color_scheme = false` or `set_colors = false` if you only want the animated background layers.
+Set `set_color_scheme = false` or `set_colors = false` if you only want the background layers.
+
+Windows uses the static electrical field by default because WezTerm can render the large APNG only in the first window of a GUI process. Set `animate_on_windows = true` to restore the animated sweep when you use a single window. macOS and other platforms use the animated sweep by default.
 
 The idle detector is local-only. It compares the foreground process name and recent visible pane text so the animation stays active while commands are visibly changing.
 

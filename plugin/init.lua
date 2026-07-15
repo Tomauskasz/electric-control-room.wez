@@ -2,6 +2,7 @@ local wezterm = require("wezterm")
 
 local M = {}
 local plugin_url = "https://github.com/Tomauskasz/electric-control-room.wez"
+local is_windows = (wezterm.target_triple or ""):find("windows", 1, true) ~= nil
 
 local window_state = {}
 local runtime = nil
@@ -157,6 +158,25 @@ local function build_backgrounds(options)
   return active_background, dormant_background
 end
 
+local function use_windows_static_background(options, active_background)
+  local assets_dir = opt(options, "assets_dir", path_join(plugin_root(), "assets"))
+  return {
+    active_background[1],
+    active_background[2],
+    {
+      source = { File = path_join(assets_dir, "control-room-dormant.png") },
+      width = "Cover",
+      height = "Cover",
+      horizontal_align = "Center",
+      vertical_align = "Middle",
+      repeat_x = "NoRepeat",
+      repeat_y = "NoRepeat",
+      opacity = opt(options, "windows_static_opacity", 1.0),
+      attachment = "Fixed",
+    },
+  }
+end
+
 local function pane_signature(pane)
   local process = basename(pane:get_foreground_process_name())
   return process .. "\n" .. (pane:get_lines_as_text(10) or ""), process
@@ -235,6 +255,9 @@ function M.apply_to_config(config, options)
   options = options or {}
 
   local active_background, dormant_background = build_backgrounds(options)
+  if is_windows and not opt(options, "animate_on_windows", false) then
+    active_background = use_windows_static_background(options, active_background)
+  end
   runtime = {
     active_background = active_background,
     dormant_background = dormant_background,
